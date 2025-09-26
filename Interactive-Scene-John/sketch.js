@@ -1,6 +1,6 @@
-// Project Title
-// Your Name
-// Date
+// Interactive Scene
+// John Asiamah
+// 9/26/2025
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
