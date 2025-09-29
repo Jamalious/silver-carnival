@@ -20,7 +20,7 @@ let swtich = 0;
 let x;
 let y;
 let circle_x;
-let circle_yl;
+let circle_y;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -61,9 +61,11 @@ function add_circle(){
     for ( let dr = 0; dr < 12; dr = dr + 30) {
       line( x - dr, y - dr, x + dr, y + dr);
       let a = 0;
-      circle(x - dr - ao, y - dr - ao ,50);
-      a = a + 50;
-      
+      circle(circle_x - dr, circle_y - dr ,50);
+      circle_x = x;
+      circle_y = y;
+      circle_x = circle_x +  10;
+      circle_y = circle_y + 10;
     }
   }
 }
