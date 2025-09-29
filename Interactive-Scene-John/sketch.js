@@ -14,12 +14,21 @@ let w = 100;
 let h = 45;
 let button_1 = false;
 let c = windowHeight;
+let waitTime = 2000;
+let add_shape;
+let swtich = 0;
+let x;
+let y;
+let circle_x;
+let circle_yl;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
   colorMode(HSB);
   background (255, 128, 64);
+  let x = width / 2;
+  let y = height /2;
 }
 
 function draw() {
@@ -45,6 +54,19 @@ function create_ellipse(){
   
   }
 }
+
+function add_circle(){
+  if (add_shape){
+    fill(random(255));
+    for ( let dr = 0; dr < 12; dr = dr + 30) {
+      line( x - dr, y - dr, x + dr, y + dr);
+      let a = 0;
+      circle(x - dr - ao, y - dr - ao ,50);
+      a = a + 50;
+      
+    }
+  }
+}
 function create_shapes(){
   if (gameState === 'kaleidoscope') {
     translate( width /2 , height / 2) ;
@@ -57,7 +79,6 @@ function create_shapes(){
       push();
       rotate(shape * rotation_angle);
       pencil_drawing();
-  
     }
   }
 }
