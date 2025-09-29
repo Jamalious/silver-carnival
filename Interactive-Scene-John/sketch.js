@@ -13,6 +13,7 @@ let usery2;
 let w = 100;
 let h = 45;
 let button_1 = false;
+let c = windowHeight;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -55,6 +56,7 @@ function create_shapes(){
       fill( 45 * shape , 45, 175);
       push();
       rotate(shape * rotation_angle);
+      pencil_drawing();
   
     }
   }
@@ -69,4 +71,19 @@ function homescreen(){
   if ( mouseX < x ) {
     let dx;
   }
+}
+function circle_metronome(){
+  
+}
+function find_character(){
+  for (let a = 25; a < width; a = a + 50 ){
+    fill("black");
+    circle(a, c / 2 , 30);
+  }
+  let a = -25;
+  while (a < width) {
+    a = a + 50;
+    fill('black');
+    circle(a, c , 30);
+  } 
 }
