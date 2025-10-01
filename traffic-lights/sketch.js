@@ -41,7 +41,7 @@ function updatedLightState() {
     lastSwitchedTime = millis();
   }
   else if (lightColor === 'yellow' && millis() > lastSwitchedTime + yellowDuration) {
-    lightColor === 'red';
+    lightColor = 'red';
     lastSwitchedTime = millis();
   }
 }
