@@ -15,26 +15,32 @@ let h = 45;
 let button_1 = false;
 let c = windowHeight;
 let waitTime = 2000;
-let add_shape;
+let d = -30;
 let swtich = 0;
-let x;
-let y;
+let x = 400;
+let y = 400;
 let circle_x;
 let circle_y;
+let r = 100;
+let a = 100;
+let lastSwitchedTime = 0;
+line_drawn = false;
+lineDuration = 4000;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
   colorMode(HSB);
   background (255, 128, 64);
-  let x = width / 2;
-  let y = height /2;
 }
 
 function draw() {
-  pencil_drawing();
-  homescreen();
-  create_shapes();
+// pencil_drawing();
+// homescreen();
+// create_shapes();
+  add_circle();
+  line_setup();
+  next_lines();
 }
 
 function pencil_drawing() {
@@ -43,32 +49,18 @@ function pencil_drawing() {
     stroke(0, 0, 0);
   }
 }
-function create_rect() {
-  if (mousePressed && some_value) {
-  
+function line_setup(){
+  if (millis() > lastSwitchedTime + lineDuration) {
+    lastSwitchedTime = millis();
+    draw_line = !draw_line;
   }
 }
-  
-function create_ellipse(){
-  if (mousePressed && some_value ) {
-  
+function next_lines(){
+  if (draw_line === 'true'){
+    line(x, y, x + r, y - 30);
   }
 }
 
-function add_circle(){
-  if (add_shape){
-    fill(random(255));
-    for ( let dr = 0; dr < 12; dr = dr + 30) {
-      line( x - dr, y - dr, x + dr, y + dr);
-      let a = 0;
-      circle(circle_x - dr, circle_y - dr ,50);
-      circle_x = x;
-      circle_y = y;
-      circle_x = circle_x +  10;
-      circle_y = circle_y + 10;
-    }
-  }
-}
 function create_shapes(){
   if (gameState === 'kaleidoscope') {
     translate( width /2 , height / 2) ;
@@ -95,9 +87,7 @@ function homescreen(){
     let dx;
   }
 }
-function circle_metronome(){
-  
-}
+
 function find_character(){
   for (let a = 25; a < width; a = a + 50 ){
     fill("black");
