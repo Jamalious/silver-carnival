@@ -4,4 +4,4 @@
 - [Traffic Lights](traffic-lights)
 
 ## Assignments
-- [Interactive Scene John](interactive-scene-john)
+- [Interactive Scene John](Interactive-Scene-John)

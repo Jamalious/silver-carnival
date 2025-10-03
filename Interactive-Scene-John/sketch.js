@@ -55,7 +55,7 @@ function line_setup(){
   }
 }
 function mouseWheel(){
-   
+  
 }
 function next_lines(){
   if (draw_line === 'true'){
