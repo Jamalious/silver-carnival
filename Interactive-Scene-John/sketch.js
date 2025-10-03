@@ -13,7 +13,6 @@ let usery2;
 let w = 100;
 let h = 45;
 let button_1 = false;
-let c = windowHeight;
 let waitTime = 2000;
 let d = -30;
 let swtich = 0;
@@ -35,12 +34,12 @@ function setup() {
 }
 
 function draw() {
-// pencil_drawing();
-// homescreen();
-// create_shapes();
+  pencil_drawing();
+  homescreen();
+  create_shapes();
   add_circle();
-  line_setup();
-  next_lines();
+  // line_setup();
+  // next_lines();
 }
 
 function pencil_drawing() {
@@ -54,6 +53,9 @@ function line_setup(){
     lastSwitchedTime = millis();
     draw_line = !draw_line;
   }
+}
+function mouseWheel(){
+   
 }
 function next_lines(){
   if (draw_line === 'true'){
