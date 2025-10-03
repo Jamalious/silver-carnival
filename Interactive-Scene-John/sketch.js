@@ -15,7 +15,6 @@ let h = 45;
 let button_1 = false;
 let waitTime = 2000;
 let d = -30;
-let swtich = 0;
 let x = 400;
 let y = 400;
 let circle_x;
@@ -25,12 +24,15 @@ let a = 100;
 let lastSwitchedTime = 0;
 line_drawn = false;
 lineDuration = 4000;
+let circle_button = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
   colorMode(HSB);
   background (255, 128, 64);
+  let circle_button = createButton('create circles');
+  circle_button.position = (0, height /2 );
 }
 
 function draw() {
@@ -70,6 +72,12 @@ function create_shapes(){
   if (gameState === 'kaleidoscope') {
     let shape_segments = 12;
     let rotation_angle = 360 / shape_segments; 
+    if (shape_button) {
+      if (shape_segments > 0) {
+        shape_segments = shape_segments - 1;
+      }
+      shape_button = !shape_button;
+    }
     for ( let shape = 0; shape < shape_segments; shape++){
       fill( 45 * shape , 45, 175);
       push();
@@ -77,6 +85,16 @@ function create_shapes(){
       pencil_drawing();
     }
   }
+  if (mouseIsPressed && circle_button) {
+    circle( mouseX, mouseY, 50);
+  }
+  else if (mousReleased && ! circle_button){
+    circle(pmouseX, pmouseY, 50);
+    
+  }
+}
+function mouseReleased(){
+  
 }
 
 function homescreen(){
