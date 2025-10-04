@@ -15,7 +15,6 @@ let h = 45;
 let button_1 = false;
 let waitTime = 2000;
 let d = -30;
-let swtich = 0;
 let x = 400;
 let y = 400;
 let circle_x;
@@ -25,14 +24,64 @@ let a = 100;
 let lastSwitchedTime = 0;
 line_drawn = false;
 lineDuration = 4000;
+let circle_selected = false;
+let reflectX = false;
+let reflextY = false;
+let shape_type = "line";
+let x_1;
+let y_1;
+let x_2;
+let y_2;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
   colorMode(HSB);
   background (255, 128, 64);
-}
+  let circle_button = createButton("Add circles");
+  circle_button.position(0, windowHeight / 2);
+  if (circle_button.mousePressed) {
+    circle_selected = !circle_selected;
+  }
+  if (shape_type === "circle") {
+    symmetric_circle(x_1, y_1, mouseX, mouseY);
+  }
+  else if (shape_type === "rectangle") {
+    symmetric_rect(x_1, y_1, mouseX, mouseY);
+  }
 
+}
+function symmetric_lines(x1,y1,x2,y2) {
+  line(x1, y1, x2, y2);
+  if (reflectX) {
+    line(width -x1, y1, width - x2, y2);
+  }
+  if (reflectX && reflectY){
+    line(width - x1, height - y1, width - x2, height -y2);
+  }
+  if (reflectX && reflectY) {
+    line(width - x1, height - y1, width - x2, height - y2);
+  }
+}
+function symmetric_circles(x1,y1,x2,y2) {
+  line(x1, y1, x2, y2);
+  r = dist(x1, y1, x2, y2);
+  fill('black');
+  ellipse(x1, y1, r * 2);
+  if (reflectX) {
+    ellipse(width -x1, y1, r * 2);
+  }
+  if (reflectY){
+    ellipse(x1, height - y1, r * 2);
+  }
+  if (reflectX && reflectY) {
+    ellipse(width - x1, height - y1, r * 2);
+  }
+}
+function symmetric_rect(x1,y1,x2,y2) {
+  w = x2 - x1;
+  h - y2- y1;
+}
 function draw() {
   pencil_drawing();
   homescreen();
@@ -54,9 +103,7 @@ function line_setup(){
     draw_line = !draw_line;
   }
 }
-function mouseWheel(){
-  
-}
+
 function next_lines(){
   if (draw_line === 'true'){
     line(x, y, x + r, y - 30);
@@ -68,13 +115,18 @@ function create_shapes(){
     translate( width /2 , height / 2) ;
   }
   if (gameState === 'kaleidoscope') {
-    let shape_segments = 12;
-    let rotation_angle = 360 / shape_segments; 
+    let shape_segments = 6;
+    let rotation_angle = 360 / shape_segments;
     for ( let shape = 0; shape < shape_segments; shape++){
-      fill( 45 * shape , 45, 175);
-      push();
-      rotate(shape * rotation_angle);
-      pencil_drawing();
+      fill( 45* shape , 45, 175);
+      rotate(rotation_angle);
+      stroke(150);
+      strokeWeight(sw_selector);
+      line(x_1, y_1, x_2, y_2);
+      // reflecting the line
+      scale( 1.1, -1.1);
+      line(x_1, y_1, x_2, y_2);
+      pop();
     }
   }
 }
