@@ -81,14 +81,64 @@ function symmetric_circles(x1,y1,x2,y2) {
 function symmetric_rect(x1,y1,x2,y2) {
   w = x2 - x1;
   h - y2- y1;
+  rect(x1, y1, w, h);
+  if (reflectX) {
+    rect(width - x1 - w, y1, w, h);
+  }
+  if (reflectY){
+    rect(x1, height - y1 - h, w, h);
+  }
+  if (reflectX && reflectY) {
+    rect(width - x1 -w , height - y1 - h, w, h);
+  }
+  
+}
+function keyPressed() {
+  if (key === 'x'){
+    reflectX = ! reflectX;
+  }
+  if (key === 'y') {
+    reflectY = !reflectY;
+  }
+  if (key === 'c') {
+    background(255);
+  }
+  if (key === '0') {
+    shape_type = "line";
+  }
+  if (key === '1'){
+    shape_type = "circle";
+  }
+  if (key === '2'){
+    shape_type = "rectangle";
+  }
+}
+function mousePressed(){
+  x_1 = mouseX;
+  y_1 = mouseY;
+}
+function mouseReleased(){
+  if (shape_type === "circle") {
+    symmetric_circles(x_1, y_1, mouseX, mouseY);
+  }
+  else if (shape_type === "circle") {
+    symmetric_rect(x_1, y_1, mouseX, mouseY);
+  }
+  x_2 = undefined;
+  y_2 = undefined;
 }
 function draw() {
-  pencil_drawing();
-  homescreen();
-  create_shapes();
-  add_circle();
+  // create_shapes();
   // line_setup();
   // next_lines();
+  if (shape_type === "line" && mouseIsPressed) {
+    stroke(0);
+    if ( x_2 !== undefined && y_2 !== undefined) {
+      symmetric_lines(x_2, y_2, mouseX, mouseY);
+    }
+  }
+  x_2 = mouseX;
+  y_2 = mouseY;
 }
 
 function pencil_drawing() {
@@ -131,27 +181,5 @@ function create_shapes(){
   }
 }
 
-function homescreen(){
-  let x = windowWidth / 2;
-  let y = windowHeight / 1.25;
-  if (gameState === 'homescreen') {
-    let dy;
-  }
-  if ( mouseX < x ) {
-    let dx;
-  }
-}
 
-function find_character(){
-  for (let a = 25; a < width; a = a + 50 ){
-    fill("black");
-    circle(a, c / 2 , 30);
-  }
-  let a = -25;
-  while (a < width) {
-    a = a + 50;
-    fill('black');
-    circle(a, c , 30);
-  } 
-}
 
