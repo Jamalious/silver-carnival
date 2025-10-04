@@ -6,58 +6,62 @@
 // - describe what you did to take this project "above and beyond"
 
 let gameState = 'kaleidoscope';
-let userx;
-let usery;
-let userx2;
-let usery2;
-let w = 100;
-let h = 45;
 let button_1 = false;
-let waitTime = 2000;
-let d = -30;
 let x = 400;
 let y = 400;
-let circle_x;
-let circle_y;
-let r = 100;
-let a = 100;
 let lastSwitchedTime = 0;
-line_drawn = false;
 lineDuration = 4000;
-let circle_selected = false;
 let reflectX = false;
-let reflextY = false;
+let reflectY = false;
 let shape_type = "line";
-let x_1;
-let y_1;
-let x_2;
-let y_2;
+let x_1, y_1;
+let x_2, y_2;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
   colorMode(HSB);
   background (255, 128, 64);
-  let circle_button = createButton("Add circles");
-  circle_button.position(0, windowHeight / 2);
-  if (circle_button.mousePressed) {
-    circle_selected = !circle_selected;
+  strokeWeight(2);
+  noStroke();
+  noFill();
+}
+function draw() {
+  // create_shapes();
+  // line_setup();
+  // next_lines();
+  if (shape_type === "line" && mouseIsPressed) {
+    stroke(0);
+    if ( x_2 !== undefined && y_2 !== undefined) {
+      symmetric_lines(x_2, y_2, mouseX, mouseY);
+    }
   }
+  x_2 = mouseX;
+  y_2 = mouseY;
+}
+function mousePressed(){
+  x_1 = mouseX;
+  y_1 = mouseY;
+}
+function mouseReleased(){
   if (shape_type === "circle") {
-    symmetric_circle(x_1, y_1, mouseX, mouseY);
+    symmetric_circles(x_1, y_1, mouseX, mouseY);
   }
   else if (shape_type === "rectangle") {
     symmetric_rect(x_1, y_1, mouseX, mouseY);
   }
-
+  x_2 = undefined;
+  y_2 = undefined;
 }
-function symmetric_lines(x1,y1,x2,y2) {
+
+//Reflecting lines
+function symmetric_lines(x1, y1, x2, y2) {
   line(x1, y1, x2, y2);
   if (reflectX) {
-    line(width -x1, y1, width - x2, y2);
+    line(width - x1, y1, width - x2, y2);
   }
-  if (reflectX && reflectY){
-    line(width - x1, height - y1, width - x2, height -y2);
+  if (reflectY){
+    line(x1, height - y1, x2, height - y2);
   }
   if (reflectX && reflectY) {
     line(width - x1, height - y1, width - x2, height - y2);
@@ -79,8 +83,9 @@ function symmetric_circles(x1,y1,x2,y2) {
   }
 }
 function symmetric_rect(x1,y1,x2,y2) {
-  w = x2 - x1;
-  h - y2- y1;
+  let w = x2 - x1;
+  let h = y2- y1;
+  fill('black');
   rect(x1, y1, w, h);
   if (reflectX) {
     rect(width - x1 - w, y1, w, h);
@@ -111,52 +116,6 @@ function keyPressed() {
   }
   if (key === '2'){
     shape_type = "rectangle";
-  }
-}
-function mousePressed(){
-  x_1 = mouseX;
-  y_1 = mouseY;
-}
-function mouseReleased(){
-  if (shape_type === "circle") {
-    symmetric_circles(x_1, y_1, mouseX, mouseY);
-  }
-  else if (shape_type === "circle") {
-    symmetric_rect(x_1, y_1, mouseX, mouseY);
-  }
-  x_2 = undefined;
-  y_2 = undefined;
-}
-function draw() {
-  // create_shapes();
-  // line_setup();
-  // next_lines();
-  if (shape_type === "line" && mouseIsPressed) {
-    stroke(0);
-    if ( x_2 !== undefined && y_2 !== undefined) {
-      symmetric_lines(x_2, y_2, mouseX, mouseY);
-    }
-  }
-  x_2 = mouseX;
-  y_2 = mouseY;
-}
-
-function pencil_drawing() {
-  if (mouseIsPressed) { 
-    line(mouseX , mouseY, pmouseX , pmouseY);
-    stroke(0, 0, 0);
-  }
-}
-function line_setup(){
-  if (millis() > lastSwitchedTime + lineDuration) {
-    lastSwitchedTime = millis();
-    draw_line = !draw_line;
-  }
-}
-
-function next_lines(){
-  if (draw_line === 'true'){
-    line(x, y, x + r, y - 30);
   }
 }
 
