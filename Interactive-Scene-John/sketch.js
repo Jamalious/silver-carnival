@@ -3,121 +3,146 @@
 // 9/26/2025
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// - used mouseWheel to toggle the color of lines and shape outlines 
+// 
 
-let gameState = 'kaleidoscope';
-let userx;
-let usery;
-let userx2;
-let usery2;
-let w = 100;
-let h = 45;
-let button_1 = false;
-let waitTime = 2000;
-let d = -30;
-let x = 400;
-let y = 400;
-let circle_x;
-let circle_y;
-let r = 100;
-let a = 100;
-let lastSwitchedTime = 0;
-line_drawn = false;
-lineDuration = 4000;
 let circle_button = false;
+
+let reflectX = false;
+let reflectY = false;
+let shape_type = "line";
+let x_1, y_1;
+let x_2, y_2;
+let colorHue = 0;
+let rt_repititions = 6; // number of rotational repititions.
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
-  colorMode(HSB);
-  background (255, 128, 64);
-  let circle_button = createButton('create circles');
-  circle_button.position = (0, height /2 );
+
+
+  colorMode(HSB, 360, 100, 100);
+  background (0);
+  strokeWeight(2);
+  noStroke();
+  noFill();
+  textSize(18);
 }
 
 function draw() {
-  pencil_drawing();
-  homescreen();
-  create_shapes();
-  add_circle();
-  // line_setup();
-  // next_lines();
-}
+  noStroke();
+  text( "0- Line |  1 - Circle | 2 - Rect| x and y to reflect | r to restart", width /2, height - 50);
+  // enabling a toggable colors controlled by mouse.
+  if (mouseIsPressed) {
+    let a = color(colorHue, 100, 100);
+    stroke(a);
+    noFill();
+  }
 
-function pencil_drawing() {
-  if (mouseIsPressed) { 
-    line(mouseX , mouseY, pmouseX , pmouseY);
-    stroke(0, 0, 0);
-  }
-}
-function line_setup(){
-  if (millis() > lastSwitchedTime + lineDuration) {
-    lastSwitchedTime = millis();
-    draw_line = !draw_line;
-  }
-}
-function mouseWheel(){
-  
-}
-function next_lines(){
-  if (draw_line === 'true'){
-    line(x, y, x + r, y - 30);
-  }
-}
 
-function create_shapes(){
-  if (gameState === 'kaleidoscope') {
-    translate( width /2 , height / 2) ;
-  }
-  if (gameState === 'kaleidoscope') {
-    let shape_segments = 12;
-    let rotation_angle = 360 / shape_segments; 
-    if (shape_button) {
-      if (shape_segments > 0) {
-        shape_segments = shape_segments - 1;
-      }
-      shape_button = !shape_button;
-    }
-    for ( let shape = 0; shape < shape_segments; shape++){
-      fill( 45 * shape , 45, 175);
-      push();
-      rotate(shape * rotation_angle);
-      pencil_drawing();
+  if (shape_type === "line" && mouseIsPressed) {
+    if ( x_2 !== undefined && y_2 !== undefined) {
+      symmetric_lines(x_2, y_2, mouseX, mouseY);
     }
   }
-  if (mouseIsPressed && circle_button) {
-    circle( mouseX, mouseY, 50);
-  }
-  else if (mousReleased && ! circle_button){
-    circle(pmouseX, pmouseY, 50);
-    
-  }
+  //storing previous mouse positions
+  x_2 = mouseX;
+  y_2 = mouseY;
 }
+
+//storing starting point/ where to begin drawing
+function mousePressed(){
+  x_1 = mouseX;
+  y_1 = mouseY;
+}
+
+// reseting previous mouse position values after each drag and click down.
 function mouseReleased(){
-  
+  if (shape_type === "circle") {
+    symmetric_circles(x_1, y_1, mouseX, mouseY);
+  }
+  else if (shape_type === "rectangle") {
+    symmetric_rect(x_1, y_1, mouseX, mouseY);
+  }
+ 
+  x_2 = undefined;
+  y_2 = undefined;
 }
 
-function homescreen(){
-  let x = windowWidth / 2;
-  let y = windowHeight / 1.25;
-  if (gameState === 'homescreen') {
-    let dy;
+// symmetry functions for reflecting shapes across x, y, and x-y axis.
+function symmetric_lines(x1, y1, x2, y2) {
+  line(x1, y1, x2, y2);
+  if (reflectX) {
+    line(width - x1, y1, width - x2, y2);
   }
-  if ( mouseX < x ) {
-    let dx;
+  if (reflectY){
+    line(x1, height - y1, x2, height - y2);
+  }
+  if (reflectX && reflectY) {
+    line(width - x1, height - y1, width - x2, height - y2);
   }
 }
 
-function find_character(){
-  for (let a = 25; a < width; a = a + 50 ){
-    fill("black");
-    circle(a, c / 2 , 30);
+function symmetric_circles(x1,y1,x2,y2) {
+  line(x1, y1, x2, y2);
+  // enabling the circles radius to be dragged/increased.
+  r = dist(x1, y1, x2, y2);
+  fill(random(255), random(255), random(255));
+  ellipse(x1, y1, r * 2);
+  if (reflectX) {
+    ellipse(width -x1, y1, r * 2);
   }
-  let a = -25;
-  while (a < width) {
-    a = a + 50;
-    fill('black');
-    circle(a, c , 30);
-  } 
+  if (reflectY){
+    ellipse(x1, height - y1, r * 2);
+  }
+  if (reflectX && reflectY) {
+    ellipse(width - x1, height - y1, r * 2);
+  }
+}
+
+function symmetric_rect(x1,y1,x2,y2) {
+  let w = x2 - x1;
+  let h = y2- y1;
+  fill(random(255), random(255), random(255));
+  rect(x1, y1, w, h);
+  if (reflectX) {
+    rect(width - x1 - w, y1, w, h);
+  }
+  if (reflectY){
+    rect(x1, height - y1 - h, w, h);
+  }
+  if (reflectX && reflectY) {
+    rect(width - x1 -w , height - y1 - h, w, h);
+  }
+}
+
+function keyPressed() {
+  //using keys to toggle the reflction axes and type of shape to draw
+  if (key === 'x'){
+    reflectX = ! reflectX;
+  }
+  if (key === 'y') {
+    reflectY = !reflectY;
+  }
+  if (key === 'r') {
+    background(0);
+  }
+  if (key === '0') {
+    shape_type = "line";
+  }
+  if (key === '1'){
+    shape_type = "circle";
+  }
+  if (key === '2'){
+    shape_type = "rectangle";
+  }
+}
+
+function mouseWheel(event) {
+  //setting sensitivity
+  colorHue += event.delta /5; 
+  // ranges from 0-360
+  colorHue = (colorHue + 360) % 360; ;
 }
 
