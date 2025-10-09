@@ -2,7 +2,8 @@
 
 ## Demos
 - [Traffic Lights](traffic-lights)
+- [Bouncing Ball](Bouncing-Ball)
+-[Generative Art](generative-art)
 
 ## Assignments
 - [Interactive Scene John](Interactive-Scene-John)
-- [Bouncing Ball](Bouncing-Ball)
