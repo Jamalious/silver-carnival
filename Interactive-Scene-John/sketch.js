@@ -41,7 +41,7 @@ function draw() {
   }
 
 
-  if (shape_type === "line" && mouseIsPressed) {
+  if (shape_type === "line" && mousePressed) {
     if ( x_2 !== undefined && y_2 !== undefined) {
       symmetric_lines(x_2, y_2, mouseX, mouseY);
     }
