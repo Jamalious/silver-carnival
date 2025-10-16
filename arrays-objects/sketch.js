@@ -5,6 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+let words = ['might,'much' 'where', 'why', 'but', 'however', 'without', 'cause ]
 let pos = {
   x: 0, 
   y: 0,
@@ -34,7 +35,6 @@ function draw() {
 }
 
 function check_addition(a, b, Sum) {
-  return a + b === Sum;
   
 }
 
