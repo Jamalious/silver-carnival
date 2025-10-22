@@ -15,6 +15,9 @@ let correctKey = false;
 let typeLog = [];
 let startSession = 'false';
 let lastSpawned = 0;
+let host, guest, cars;
+const START_X = 40;
+
 
 class Cars {
   constructor(x, y, carWidth, carHeight, dx) {
@@ -22,7 +25,7 @@ class Cars {
     this.y = y;
     this.carWidth = carWidth;
     this.carHeight = carHeight;
-    this.dx = 0;
+    this.dx = dx;
     this.inSession = false;
     this.id = random(1, 10);
   }
@@ -37,7 +40,7 @@ class theBots {
     this.y = y;
     this.carWidth = carWidth;
     this.carHeight = carHeight;
-    this.dx = 0;
+    this.dx = dx;
     this.inSession = false;
     this.id = random(1, 10);
   }
@@ -45,14 +48,13 @@ class theBots {
     if (this.inSession) { 
     }
 
-
   }
 
 }
 
 //Characteristics of each players car
 let playerOneCar = {
-  x: 40, 
+  x: START_X, 
   y: 100,
   vel: 0,
   skip_word: 0,
@@ -62,8 +64,8 @@ let playerOneCar = {
 
 };
 let playerTwoCar = {
-  x2: 40,
-  y2: 300,
+  x2: START_X,
+  y2: 200,
   vel2: 0,
   skip_word: 0,
   avg_accuracy: 0, 
@@ -71,18 +73,24 @@ let playerTwoCar = {
   isSpawned: false,
 };
 
-let bots = {
-  x: 40,
-  y: 100,
-  vel3: 0,
-  accuracy: 0,
-  isSpawned: false,
-};
 
 function preload() {
-  partyConnect( 'https://jamalious.github.io/silver-carnival/'
+  partyConnect( "wss://demoserver.p5party.org", "typing"
   );
-  pos = partyLoadShared("cars", playerOneCar, playerTwoCar, bots);
+  //connecting to the server(based of Among Us demo setup)
+  my = partyLoadMyShared();
+  guests = partyLoadGuestsShared();
+  cars = partyLoadShared("cars", bots,{
+    carX: 200,
+    carY: 200,
+    vel2: 0,
+    skip_word: 0,
+    avg_accuracy: 0, 
+    session: 0,
+    isSpawned: false,
+
+  }
+  );
 
 }
 
@@ -91,6 +99,8 @@ function setup() {
   partyToggleInfo(true);
   background(0);
   gameSession();
+  my.car = new Cars(START_X, 100, 50, 50, 0);
+  bot.car = new theBots(START_X, 200, 50, 50, 0);
   generateWords();
 }
 
@@ -103,6 +113,15 @@ function draw() {
   ellipse(bots.x3, bots.y3, 100, 100);
 }
 
+function players(){
+  for (guest of guests) {
+    if (my.player !== guest.player){
+      
+    }
+
+  }
+
+}
 function mousePressed(){
   playerOneCar.x = mouseX;
 }
@@ -112,6 +131,7 @@ function generateWords(){
   const randomIndex = Math.floor(random() * words.length);
   return words[randomIndex];
 }
+
 function gameSession(){
   if (startSession){
     document.getElementById('words').innerHTML =  '';
@@ -135,6 +155,7 @@ function moveCarsAcrossScreen(){
 function loadBots(){
   if (millis() > lastSpawned + botLoadTime) {
     lastSpawned = millis();
-    newbot();
+    spawnBot = new theBots(START_X, 200, 45, 45, 0);
+    theBots.y += 100;
   }
 }
