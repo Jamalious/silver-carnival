@@ -41,7 +41,6 @@ class theBots {
     this.carWidth = carWidth;
     this.carHeight = carHeight;
     this.dx = dx;
-    this.inSession = false;
     this.id = random(1, 10);
   }
   moveCar() {
@@ -77,7 +76,7 @@ let playerTwoCar = {
 function preload() {
   partyConnect( "wss://demoserver.p5party.org", "typing"
   );
-  //connecting to the server(based of Among Us demo setup)
+  //connecting to the server(based off Among Us demo setup)
   my = partyLoadMyShared();
   guests = partyLoadGuestsShared();
   cars = partyLoadShared("cars", bots,{
@@ -97,16 +96,13 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   partyToggleInfo(true);
-  background(0);
-  gameSession();
   my.car = new Cars(START_X, 100, 50, 50, 0);
   bot.car = new theBots(START_X, 200, 50, 50, 0);
-  generateWords();
+  background(100, 200, 200);
 }
 
 
 function draw() {
-  background(220);
   // Pretend these circles are cars for now
   ellipse(playerOneCar.x, playerOneCar.y, 100, 100);
   ellipse(playerTwoCar.x2, playerTwoCar.y2, 100, 100);
@@ -134,9 +130,9 @@ function generateWords(){
 
 function gameSession(){
   if (startSession){
-    document.getElementById('words').innerHTML =  '';
+    document.getElementById("words").innerHTML =  '';
     for (let i = 0; i < 200; i ++){
-      document.getElementById('words').innerHTML += generateWords();
+      document.getElementById("words").innerHTML += generateWords();
     }
     for (character of currentIndex){
       if (key === currentIndex[character]){
@@ -150,6 +146,11 @@ function gameSession(){
 }
 
 function moveCarsAcrossScreen(){
+  if (this.inSession){
+    if (correctKeyPressed){
+      this.x += 5;
+    }
+  }
 
 }
 function loadBots(){
@@ -159,3 +160,5 @@ function loadBots(){
     theBots.y += 100;
   }
 }
+
+gameSession();
