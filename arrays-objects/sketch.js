@@ -6,6 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 
 const words = ['might', 'much', 'where', 'why', 'but', 'however', 'without', 'cause', 'how', 'such', 'that', 'into' ];
+const noorParagraph = "Noor is a grade 12 SAGE student at Walter Murray";
 let botLoadTime = 3000;
 let button = 'false';
 let number1;
@@ -74,7 +75,7 @@ let playerTwoCar = {
 
 
 function preload() {
-  partyConnect( "wss://demoserver.p5party.org", "typing"
+  partyConnect( "wss://deepstream-server-1.herokuapp.com", "typing", "main"
   );
   //connecting to the server(based off Among Us demo setup)
   my = partyLoadMyShared();
@@ -95,7 +96,6 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  partyToggleInfo(true);
   my.car = new Cars(START_X, 100, 50, 50, 0);
   bot.car = new theBots(START_X, 200, 50, 50, 0);
   background(100, 200, 200);
@@ -157,8 +157,6 @@ function loadBots(){
   if (millis() > lastSpawned + botLoadTime) {
     lastSpawned = millis();
     spawnBot = new theBots(START_X, 200, 45, 45, 0);
-    theBots.y += 100;
+    theBots.y += wordsTyped;
   }
 }
-
-gameSession();
