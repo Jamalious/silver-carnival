@@ -6,7 +6,8 @@
 // - describe what you did to take this project "above and beyond"
 
 const words = ['might', 'much', 'where', 'why', 'but', 'however', 'without', 'cause', 'how', 'such', 'that', 'into' ];
-const noorParagraph = "Noor is a grade 12 SAGE student at Walter Murray";
+const noorText = "Noor is a grade 12 SAGE student at Walter Murray";
+
 let botLoadTime = 3000;
 let button = 'false';
 let number1;
@@ -44,6 +45,16 @@ class theBots {
     this.dx = dx;
     this.id = random(1, 10);
   }
+};
+class guestRacers {
+  constructor(x, y, carWidth, carHeight, dx) {
+    this.x = x;
+    this.y = y;
+    this.carWidth = carWidth;
+    this.carHeight = carHeight;
+    this.dx = dx;
+    this.id = random(1, 10);
+  };
   moveCar() {
     if (this.inSession) { 
     }
@@ -79,7 +90,7 @@ function preload() {
   );
   //connecting to the server(based off Among Us demo setup)
   my = partyLoadMyShared();
-  guests = partyLoadGuestsShared();
+  guest = partyLoadGuestShared();
   cars = partyLoadShared("cars", bots,{
     carX: 200,
     carY: 200,
@@ -158,5 +169,6 @@ function loadBots(){
     lastSpawned = millis();
     spawnBot = new theBots(START_X, 200, 45, 45, 0);
     theBots.y += wordsTyped;
+
   }
 }
