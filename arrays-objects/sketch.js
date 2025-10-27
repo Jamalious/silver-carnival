@@ -45,6 +45,16 @@ class theBots {
     this.dx = dx;
     this.id = random(1, 10);
   }
+};
+class guestRacers {
+  constructor(x, y, carWidth, carHeight, dx) {
+    this.x = x;
+    this.y = y;
+    this.carWidth = carWidth;
+    this.carHeight = carHeight;
+    this.dx = dx;
+    this.id = random(1, 10);
+  };
   moveCar() {
     if (this.inSession) { 
     }
@@ -118,7 +128,7 @@ function generateParagraph(){
   paragraph.split('');forEach(character => {
     const characterSpan = document.createElement('span');
     characterSpan.innerText = character;
-    characterSpan.classList.add('correct-key-pressed')
+    characterSpan.classList.add('correct-key-pressed');
     paragraphDisplayElement.appendChild(characterSpan);
   });
   console.log(quote);
