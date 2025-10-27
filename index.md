@@ -10,5 +10,5 @@
 
 ## Assignments
 - [Interactive Scene John](Interactive-Scene-John)
--[Arrays and Objects](arrays-objects)
+- [Arrays and Objects](arrays-objects)
  
