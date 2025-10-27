@@ -17,7 +17,7 @@ body, .user-input {
 }
 .container {
   position:absolute;
-  background-color: green;
+  background-color: cyan;
   padding: 1rem;
   border-radius: .5rem;
   width: 800px;
@@ -43,4 +43,11 @@ canvas {
   resize: none;
   padding: .5 1rem;
   font-size: 1rem;
+}
+.correct-key-pressed {
+  color: green;
+}
+.incorrect-key-pressed {
+  color: red;
+  text-decoration: underline;
 }

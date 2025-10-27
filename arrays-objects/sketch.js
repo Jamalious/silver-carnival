@@ -1,160 +1,170 @@
 // Multiplayer Typing game 
 // John Asiamah
-// Date
+// October 26, 2025
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// - "Explored HTML and CSS"
+// - "Began implementing multiplayer with p5.party"
+//- "Implemented HTML and CSS design elements"
+// "Looked into events and addeventListeners"
+// didn't finish project but plan on continuing to work on it for my final project"
+// -"Looked into how to use classes but didn't quite figure out how to use them"
 
 let paragraphs = ["One summer night a man stood on a low hill overlooking a wide expanse of forest and field. By the full moon hanging low in the west he knew what he might not have known otherwise: that it was near the hour of dawn. A light mist lay along the earth, partly veiling the lower features of the landscape, but above it the taller trees showed in well defined masses against a clear sky. Two or three farmhouses were visible through the haze, but in none of them, naturally, was a light. Nowhere, indeed, was any sign or suggestion of life except the barking of a distant dog, which, repeated with mechanical iteration, served rather to accentuate than dispel the loneliness of the scene. ", "Smooth muscle cells are connected directly to one another, allowing electrical pulses to pass through them. Cardiac muscle is a special type of tissue that is only found within your heart. Did you know your heart is actually a very strong muscle? Like skeletal muscle cells, cardiac muscles cells are striated, or striped. Like smooth muscle cells, cardiac muscle cells are not under the control of your brain, but instead operate independently. Also like smooth muscle cells, the cells of your heart are connected directly to one another, allowing electrical pulses to flow through them.","Extrinsic motivation is one of the oldest and most common forms of motivation in the world. Simply stated, when we experience extrinsic motivation we expect to be rewarded. A more formal definition refers to motivation that's derived from outside a person. The motivating factors come externally in the form of rewards such as money or, in the case of a student, rewards come in the form of grades. It's the reward that provides satisfaction from completing the task and not the pleasure of doing it. A person who is motivated extrinsically will work on a task even though he may hate what he's doing because of the anticipated reward."];
 const paragraphDisplayElement = document.getElementById('paragraphDisplay');
 const userInputElement = document.getElementById('userInput');
 let botLoadTime = 3000;
-let button = 'false';
-let number1;
-let number2;
-let solution;
-let correctKey = false;
-let typeLog = [];
+let accuracy;
 let startSession = 'false';
-let lastSpawned = 0;
-let my, players, shared;
+let shared;
+let player;
+let players;
+let waitTime = 2000;
+let lastSwitched = 0;
 const START_X = 40;
+CAR_SIZE = 8;
+
+//let lastSpawned = 0;
+// comparing individual characters from the displayed paragraph to the user's input. Drawn https://www.youtube.com/watch?v=R-7eQIHRszQ&t=667s"
 
 
-class Cars {
-  constructor(x, y, carWidth, carHeight, dx) {
-    this.x = x;
-    this.y = y;
-    this.carWidth = carWidth;
-    this.carHeight = carHeight;
-    this.dx = dx;
-    this.inSession = false;
-    this.id = random(1, 10);
-  }
-  moveCar() {
-    if (this.inSession) { 
-    }
-  }
-}
-class theBots {
-  constructor(x, y, carWidth, carHeight, dx) {
-    this.x = x;
-    this.y = y;
-    this.carWidth = carWidth;
-    this.carHeight = carHeight;
-    this.dx = dx;
-    this.id = random(1, 10);
-  }
-};
-class guestRacers {
-  constructor(x, y, carWidth, carHeight, dx) {
-    this.x = x;
-    this.y = y;
-    this.carWidth = carWidth;
-    this.carHeight = carHeight;
-    this.dx = dx;
-    this.id = random(1, 10);
-  };
-  moveCar() {
-    if (this.inSession) { 
-    }
+//class racer {
+// //constructor(x, y, carWidth, carHeight, dx) {
+// //this.x = x;
+// //this.y = y;
+// //this.carWidth = carWidth;
+// //this.carHeight = carHeight;
+// //this.dx = dx;
+// //this.inSession = false;
+// //this.id = random(1, 10);
+// //}
+//}
+//class theBots {
+// //constructor(x, y, carWidth, carHeight, dx) {
+//  //this.x = x;
+// //this.y = y;
+// //this.carWidth = carWidth;
+// //this.carHeight = carHeight;
+// //  //this.dx = dx;
+//  // //this.id = random(1, 10);
+// //}
+//};
 
-  }
-
-}
 
 //Characteristics of each players car
-let playerOneCar = {
-  x: START_X, 
-  y: 100,
-  vel: 0,
-  skip_word: 0,
-  avg_accuracy: 0,
-  session: 0,
-  isSpawned: false,
-
-};
-let playerTwoCar = {
-  x2: START_X,
-  y2: 200,
-  vel2: 0,
-  skip_word: 0,
-  avg_accuracy: 0, 
-  session: 0,
-  isSpawned: false,
-};
-
-
 function preload() {
-  //partyConnect( "wss://demoserver.p5party.org", "typing"
-  //);
-  //connecting to the server(based off Among Us demo setup)
-  //my = partyLoadMyShared();
-  //players = partyLoadGuestsShared();
-  //shared = partyLoadShared("cars", bots,{
-  // //carX: 200,
-  // //carY: 200,
-  // // vel2: 0,
-  // //skip_word: 0,
-  //  //avg_accuracy: 0, 
-  // // session: 0,
-  // //isSpawned: false,
-
-  //}
-  //);
-
+  partyConnect( "wss://demoserver.p5party.org", "typing"
+  );
+  //connecting to the server(looked at Among Us demo setup)
+  shared = partyLoadShared();
+  players = partyLoadGuestShareds();
+  player = partyLoadMyShared( {
+    pos: {
+      x: 25,
+      y: random(50, 150),
+      dx: 0,
+      accuracy: 0,
+      wpm: 0,
+    },
+    gameInSession: false,
+    colour: [random(255), random(255), random(255)],
+    inSession: false,
+  });
 }
 
 function setup() {
-  createCanvas(300, 300);
+  createCanvas(500, 300);
+  background(0);
   generateParagraph();
-  //my.car = new Cars(START_X, 100, 50, 50, 0);
-  // bot.car = new theBots(START_X, 200, 50, 50, 0);
+  checkCharacters();
 }
-
 
 function draw() {
-  // Pretend these circles are cars for now
-  //ellipse(playerOneCar.x, playerOneCar.y, 100, 100);
-  //ellipse(playerTwoCar.x2, playerTwoCar.y2, 100, 100);
-  //ellipse(bots.x3, bots.y3, 100, 100);
-  
+  gameSession();
+  sessionOver();
+  sessionOver();
+  moveCars();
 }
 
+// setting up the player cars for the typing session
+function gameSession() {
+  for(let guest of players) {
+    if (guest.inSession){
+      ellipse(width/2 + guest.pos.x - CAR_SIZE /2 , height/2 + guest.pos.y - CAR_SIZE /2, CAR_SIZE);
+    }
+  };
+}
 
+//determining when the session is over
+function sessionOver() {
+  let sessionOver = true;
+  for (let guest of players) {
+    if(guest.inSession) {
+      sessionOver = false;
+      break;
+    }
+  }
+  noStroke();
+  textAlign(CENTER, CENTER);
+  fill("white");
+  text("Race Over!", width /2, height /2 - height/2 - 50);
+  fill("white");
+  // text("Accuracy: {accuracy}", width /2, height /2- height /2 + 50);
+}
+
+//moving the player cars when the players type the correct keys
+function moveCars(){
+  if (player.inSession && player.pos.x < 400){
+    player.pos.x += 5;
+  }
+}
+
+// picking a new paragraph for each new session
 function generateParagraph(){
   const paragraph = random(paragraphs);
-  paragraphDisplayElement.innerText = paragraph;
-  paragraph.split('');forEach(character => {
+  paragraphDisplayElement.innerHTML = '';
+  paragraph.split('').forEach(character => {
     const characterSpan = document.createElement('span');
     characterSpan.innerText = character;
-    characterSpan.classList.add('correct-key-pressed');
     paragraphDisplayElement.appendChild(characterSpan);
   });
-  console.log(quote);
+  console.log(paragraph);
+  
   //clearing out user input for every new paragraph.
   userInputElement.value = null;
-
 }
-//function gameSession(){
-// //if (startSession){
-// // generate_paragraph(); 
-// //for (character of currentIndex){
-// // if (key === currentIndex[character]){
-// //  playerOneCar.x =+ 0.001;
-// // }
-// //}
-// //how to display these words on the screen? work on style/html stuff later
-// // console.log(currentIndex);
-// //}
 
-//}
+function checkCharacters(){
+  let finishedSession = true;
 
-//function loadBots(){
-// // if (millis() > lastSpawned + botLoadTime) {
-// //  lastSpawned = millis();
-// //spawnBot = new theBots(START_X, 200, 45, 45, 0);
-// //theBots.y += 100;
-// // }
-//}
+  //loops over every character in the paragraph array. If correct character is typed, 
+  userInputElement.addEventListener('input', () => {
+    const arrayParagraph = paragraphDisplayElement.querySelectorAll('span');
+    
+    //splitting the user's input into an array for each individual character
+    const arrayPosition = userInputElement.value.split('');
+    arrayParagraph.forEach((characterSpan, index) => {
+      const character = arrayPosition[index];
+      
+      // adding and removing 
+      if (character === null) {
+        characterSpan.classList.remove("correct-key-pressed");
+        characterSpan.classList.remove("incorrect-key-pressed");
+        finishedSession = false;
+      } 
+      else if (character === characterSpan.innerText) {
+        characterSpan.classList.add("correct-key-pressed");
+        characterSpan.classList.remove("incorrect-key-pressed");
+      } 
+      else {
+        characterSpan.classList.remove("correct-key-pressed");
+        characterSpan.classList.add("incorrect-key-pressed");
+        finishedSession = false;
+      }
+    });
 
+    if (finishedSession){
+      generateParagraph();
+    }
+  });
+}
