@@ -7,6 +7,9 @@
 - [Perlin Noise](perlin-noise)
 - [Perlin Bubbles](perlin-bubbles)
 - [Terrain Generation](terrain-generation)
+- [Grid](grid)
+- [Rectangle Neighbours 2d Array Demo](rect-neighbors-array)
+
 
 ## Assignments
 - [Interactive Scene John](Interactive-Scene-John)
