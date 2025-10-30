@@ -13,6 +13,7 @@
 
 
 ## Assignments
-- [Interactive Scene John](Interactive-Scene-John)
+- [Interactive Scene](Interactive-Scene-John)
 - [Arrays and Objects](arrays-objects)
+- [Grid Based Game](grid-assignment)
  

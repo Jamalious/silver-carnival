@@ -11,7 +11,11 @@ let grid;
 let rows;
 let cols;
 let autoPlayIsOn = false;
+let gosper;
 
+function preload() {
+  gosper = loadJSON("gosper");
+}
 function setup() {
   createCanvas(windowWidth, windowHeight);
   cols = Math.floor(width/CELL_SIZE);
@@ -22,7 +26,7 @@ function setup() {
 function draw() {
   background(220);
   if (autoPlayIsOn && frameCount % RENDER_ON_FRAME === 0){
-    updateGrid();
+    grid = updateGrid();
   }
   displayGrid();
 }
@@ -93,6 +97,9 @@ function keyPressed(){
   }
   else if (key === "a"){
     autoPlayIsOn = !autoPlayIsOn;
+  }
+  else if (key === "g"){
+    grid = gosper;
   }
 }
 function mousePressed() {

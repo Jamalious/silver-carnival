@@ -40,6 +40,7 @@ function showGrid() {
         fill("white");
       }
       square(x * cellSize, y * cellSize, cellSize);
+      
     }
   }
 }
