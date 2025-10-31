@@ -9,6 +9,14 @@ GRIDWIDTH , GRIDHEIGHT = 10;
 let cellSize;
 let grid;
 
+shapeAngles = [45, 60, 72, 36,];
+let gridShape =  {
+  x: GRIDWIDTH,
+  y: GRIDHEIGHT,
+  radius: cellSize,
+  angle: random(shapeAngles),
+};
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   if (width < height) {
@@ -39,7 +47,6 @@ function generateRandomGrid(cols, rows) {
   }
   return newGrid;
 }
-function drawPentagons(){}
 
 
 function drawGrid(){
