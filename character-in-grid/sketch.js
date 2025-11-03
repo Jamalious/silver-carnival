@@ -12,17 +12,26 @@ const PLAYER = 9;
 let grid;
 let rows;
 let cols;
+let grassImg;
+let pathImg;
 let thePlayer = {
   x: 0,
   y: 0,
 };
+
+function preload(){
+  grassImg = loadImage("grass.png");
+  pathImg = loadImage("paving.png");
+}
 
 function setup() {
   createCanvas(windowWidth * 0.9, windowHeight * 0.9);
   cols = Math.floor(width/CELL_SIZE);
   rows = Math.floor(height/CELL_SIZE);
   grid = generateRandomGrid(cols, rows);
-  grid[thePlayer.y][thePlayer.x];
+  
+  //add player to grid
+  grid[thePlayer.y][thePlayer.x] = PLAYER;
 }
 
 function draw() {
@@ -34,15 +43,18 @@ function displayGrid() {
   for (let y = 0; y < rows; y ++){
     for (let x = 0; x < cols; x++){
       if(grid[y][x] === OPEN_TILE){
-        fill("white");
+        image(grassImg, x * CELL_SIZE, y* CELL_SIZE, CELL_SIZE);
       }
       else if (grid[y][x] === IMPASSABLE) {
-        fill("black");
+        
+        image(pathImg, x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
       else if (grid[y][x] === PLAYER){
-        fill("yellow");
+        fill("red");
+        square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+
       }
-      square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+     
     }
   }
 }
@@ -64,7 +76,7 @@ function keyPressed(){
     movePlayer(thePlayer.x -1, thePlayer.y);
   }
   else if (key === "s"){
-    movePlayer(thePlayer.x, thePlayer + 1);
+    movePlayer(thePlayer.x, thePlayer.y + 1);
   }
 }
 
