@@ -1,6 +1,6 @@
 // Project Title
-// Your Name
-// Date
+// John Asiamah
+// 11/12/2025
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
@@ -9,10 +9,26 @@ let GRIDWIDTH , GRIDHEIGHT = 10;
 let cellSize;
 let grid;
 let TOP_RADIUS = 10;
+let host, guests,shared;
 let BOTTOM_RIGHT_RADIUS = 10;
 let BOTTOM_LEFT_RADIUS = 10;
 
+let thePlayer = {
+  x: 0,
+  y: 0,
+  dx: 5, 
+  dy: 5,
+  isAlive: false,
+};
 
+class bots {
+  constructor(x, y, dx, dy, ){
+    this.x =x;
+    this.y = y;
+    this.dx = dx;
+    this.dy = dy;
+  }
+};
 
 let gridShape =  {
   x: GRIDWIDTH,
@@ -21,6 +37,10 @@ let gridShape =  {
   angle: shapeType,
 };
 
+function preload(){
+  shared = partyLoadShared("shared", thePlayer);
+  
+}
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
@@ -82,5 +102,18 @@ function drawGrid(){
       square(x* cellSize, y * cellSize, GRIDTHWIDTH, GRIDHEIGHT, 15, 10, 5);
     }
   }
-
+}
+function keyPressed(){
+  if (key === "w" ){
+    movePlayer(thePlayer.x, thePlayer.y - thePlayer.dy);
+  }
+  else if(key ==="d") {
+    movePlayer(thePlayer.x + thePlayer.dx, thePlayer.y);
+  }
+  else if (key === "a") {
+    movePlayer(thePlayer.x - thePlayer.dx, thePlayer.y);
+  }
+  else if (key === "s"){
+    movePlayer(thePlayer.x, thePlayer.y + thePlayer.dy );
+  }
 }
