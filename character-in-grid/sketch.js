@@ -1,6 +1,6 @@
-// Project Title
-// Your Name
-// Date
+// Trollface.io
+// John Asiamah
+// 11/5/2025
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
@@ -14,6 +14,7 @@ let rows;
 let cols;
 let grassImg;
 let pathImg;
+let homeScreen;
 let thePlayer = {
   x: 0,
   y: 0,
@@ -24,8 +25,9 @@ function preload(){
   pathImg = loadImage("paving.png");
 }
 
+
 function setup() {
-  createCanvas(windowWidth * 0.9, windowHeight * 0.9);
+  createCanvas(windowWidth, windowHeight);
   cols = Math.floor(width/CELL_SIZE);
   rows = Math.floor(height/CELL_SIZE);
   grid = generateRandomGrid(cols, rows);

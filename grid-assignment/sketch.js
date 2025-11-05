@@ -4,7 +4,10 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
-
+const CELL_SIZE = 50;
+const IMPASSABLE = 1;
+const OPEN_TILE = 0;
+const SNAKE = 9;
 let GRIDWIDTH , GRIDHEIGHT = 10;
 let cellSize;
 let grid;
@@ -12,6 +15,7 @@ let TOP_RADIUS = 10;
 let host, guests,shared;
 let BOTTOM_RIGHT_RADIUS = 10;
 let BOTTOM_LEFT_RADIUS = 10;
+
 
 let thePlayer = {
   x: 0,
@@ -23,7 +27,7 @@ let thePlayer = {
 
 class bots {
   constructor(x, y, dx, dy, ){
-    this.x =x;
+    this.x = x;
     this.y = y;
     this.dx = dx;
     this.dy = dy;
@@ -99,21 +103,10 @@ function drawGrid(){
       if (grid[y][x] === 0){
         fill("black");
       }
-      square(x* cellSize, y * cellSize, GRIDTHWIDTH, GRIDHEIGHT, 15, 10, 5);
+      square(x* cellSize, y * cellSize, GRIDWIDTH, GRIDHEIGHT, 15, 10, 5);
     }
   }
 }
 function keyPressed(){
-  if (key === "w" ){
-    movePlayer(thePlayer.x, thePlayer.y - thePlayer.dy);
-  }
-  else if(key ==="d") {
-    movePlayer(thePlayer.x + thePlayer.dx, thePlayer.y);
-  }
-  else if (key === "a") {
-    movePlayer(thePlayer.x - thePlayer.dx, thePlayer.y);
-  }
-  else if (key === "s"){
-    movePlayer(thePlayer.x, thePlayer.y + thePlayer.dy );
-  }
+
 }
