@@ -2,7 +2,7 @@ let homeScreen;
 let cols;
 let rows;
 let SNAKE;
-
+let gameState = "home";
 
 class snake {
   constructor (x, y, dx, dy){
@@ -14,7 +14,15 @@ class snake {
   }
 
 }
-
+// 
+function drawPlayer(){
+  const p1 = guests.find((p) => p.role === "snake1");
+  const p2 = guests.find((p) => p.role === "snake2");
+  const p3 = guests.find((p) => p.role === "snake3");
+  const p4 = guests.find((p) => p.role === "snake4");
+  const p5 = guests.find((p) => p.role === "snake5");
+  const p6 = guests.find((p) => p.role === "snake6");
+}
 function movePlayer(x, y, dx, dy){
   if (snake.this.isAlive){
     if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === OPEN_TILE){
