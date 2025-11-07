@@ -11,10 +11,12 @@ const SNAKE = 9;
 let GRIDWIDTH , GRIDHEIGHT = 10;
 let cellSize;
 let grid;
+let displayWorld;
 let TOP_RADIUS = 10;
-let host, guests,shared;
+let player, guests, my;
 let BOTTOM_RIGHT_RADIUS = 10;
 let BOTTOM_LEFT_RADIUS = 10;
+
 
 
 let thePlayer = {
@@ -42,11 +44,14 @@ let gridShape =  {
 };
 
 function preload(){
+  partyConnect("wss://deepstream-server-1.herokuapp.com","grid.io");
   shared = partyLoadShared("shared", thePlayer);
-  
+  players = partyLoadGuestShareds();
+  guest = partyLoadmyShared();
 }
+
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(6000, 6000);
   angleMode(DEGREES);
   if (width < height) {
     cellSize = width/SQUARE_DIMENSIONS;
@@ -55,12 +60,16 @@ function setup() {
     cellSize = height/SQUARE_DIMENSIONS;
   }
   grid = generateRandomGrid(GRIDWIDTH, GRIDHEIGHT);
+  //world map in bottom left corner
+  displayWorld = generateRandomGrid(width - 250, height - 250);
+
+  //instantiate the the new player
+  newPlayer = new snake (0, 0, 0, 0);
 }
 function mapTiles(){
-  const shapeAngles = [45, 60, 72, 36,];
-  const randomIndex = Math.floor(Math.random() * shapeAngles.length);
-  const shapeType = shapeAngles[randomIndex];
-
+  //const shapeAngles = [45, 60, 72, 36,];
+  //const randomIndex = Math.floor(Math.random() * shapeAngles.length);
+  //const shapeType = shapeAngles[randomIndex];
 }
 function draw() {
   background(220);
@@ -96,7 +105,6 @@ function generateRandomGrid(cols, rows) {
   return newGrid;
 }
 
-
 function drawGrid(){
   for (let x = 0; x < GRIDWIDTH; x++){
     for(let y = 0; y < GRIDHEIGHT; y ++){
@@ -106,7 +114,4 @@ function drawGrid(){
       square(x* cellSize, y * cellSize, GRIDWIDTH, GRIDHEIGHT, 15, 10, 5);
     }
   }
-}
-function keyPressed(){
-
 }
