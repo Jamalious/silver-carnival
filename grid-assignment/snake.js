@@ -200,6 +200,21 @@ function addPlayer(){
     grid[tenthPlayer.y][tenthPlayer.x] = PLAYER10;
   }
 }
+
+function drawAllPlayers(){
+  for (let g of guests){
+    if(!g){
+      continue;
+    }
+  }
+}
+function drawPlayer(playerShape){
+  if (!playerShape){
+    return;
+  }
+  const px = playerShape.x * CELL_SIZE + CELL_SIZE /2;
+  const py = playerShape.x * CELL-SIZE + CELL-SIZE /2;
+}
 function movePlayer(x, y, dx, dy){
   if (snake.this.isAlive){
     if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === OPEN_TILE){
@@ -219,6 +234,59 @@ function movePlayer(x, y, dx, dy){
     }
   }
 }
+function updatePlayerMovement(grid) {
+  
+  // stopping this from running once the player dies
+  if (!me.alive){
+    return;
+  }
+  if(frameCount - lastMoveFrame < FRAME_STEP){
+    return;
+  }
+  lastMoveFrame = frameCount;
+  let posx = me.x;
+  let posy = me.y;
+  if (me.direction === "up"){
+    posy--;
+  }
+  if (me.direction === "down"){
+    posy++;
+  }
+  if (me.direction === "left"){
+    posx--;
+  }
+  if (me.direction === "right"){
+    posx++;
+  }
+  //Checks for collisions with other player;s trials or territory
+  if (collisionsWithGuests(posx, posy)) {
+    me.alive = false;
+    return;
+  }
+
+  //Movement
+  me.x = posx;
+  me.y = posy;
+}
+
+function collisionsWithGuests(posx, posy) {
+
+  //checks for collission with own trail:
+  if (containsCell(me.trail, posx, posy)) {
+    return true;
+  }
+  for (let g of guests){
+    if (!g){
+      continue;
+    }
+    //If another player's trail is in this position, then that player dies
+    if (containsCell(g.trail, posx, posy)) { 
+      g.isAlive = false;
+    }
+  }
+  return false;
+}
+
 //eliminating a player if they run into the edge or touch a line
 function killPlayer (player) {
   if (get(player.x + player.dx, player.y - player.dy).toString() !== PASSABLE.toString()){
