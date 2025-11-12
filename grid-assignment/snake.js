@@ -17,6 +17,70 @@ class snake {
 }
 
 function assignPlayer(){
+  if (!guests.find((p) => p.role === "player1")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player1";
+    }
+  }
+  if (!guests.find((p) => p.role === "player2")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player2";
+    }
+  }
+  if (!guests.find((p) => p.role === "player3")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player3";
+    }
+  }
+  if (!guests.find((p) => p.role === "player4")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player4";
+    }
+  }
+  if (!guests.find((p) => p.role === "player5")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player5";
+    }
+  }
+  if (!guests.find((p) => p.role === "player6")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player6";
+    }
+  }
+  if (!guests.find((p) => p.role === "player7")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player7";
+    }
+  }
+  if (!guests.find((p) => p.role === "player8")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player8";
+    }
+  }
+  if (!guests.find((p) => p.role === "player9")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player9";
+    }
+  }
+  if (!guests.find((p) => p.role === "player10")){
+    const sp =guests.find((p) => p.role === "somePlayer");
+    if (sp === me) {
+      sp.role = "player10";
+    }
+  }
+  
+}
+
+function drawPlayer(){
   const p1 = guests.find((p) => p.role === "snake1");
   const p2 = guests.find((p) => p.role === "snake2");
   const p3 = guests.find((p) => p.role === "snake3");
@@ -27,12 +91,6 @@ function assignPlayer(){
   const p8 = guests.find((p) => p.role === "snake8");
   const p9 = guests.find((p) => p.role === "snake9");
   const p10 = guests.find((p) => p.role === "snake10");
-  if (!guests.find((p)) => p.role === "player1"){
-    
-  }
-  
-}
-function drawPlayer(){
   if (p1){
     fill(r, g, b);
     rect( x * cellSize, y * cellSize, cellSize);

@@ -13,7 +13,7 @@ let cellSize;
 let grid;
 let displayWorld;
 let TOP_RADIUS = 10;
-let player, guests, my;
+let players, guests, me;
 let BOTTOM_RIGHT_RADIUS = 10;
 let BOTTOM_LEFT_RADIUS = 10;
 
@@ -45,9 +45,9 @@ let gridShape =  {
 
 function preload(){
   partyConnect("wss://deepstream-server-1.herokuapp.com","grid.io");
-  shared = partyLoadShared("shared", thePlayer);
+  shared = partyLoadShared("shared");
   players = partyLoadGuestShareds();
-  guest = partyLoadmyShared();
+  me = partyLoadmyShared({role: "somePlayer"});
 }
 
 function setup() {
@@ -65,6 +65,11 @@ function setup() {
 
   //instantiate the the new player
   newPlayer = new snake (0, 0, 0, 0);
+  if (partyIsHost){
+    partySetShared(shared, {
+      s1: [],
+    });
+  }
 }
 function mapTiles(){
   //const shapeAngles = [45, 60, 72, 36,];
@@ -74,6 +79,12 @@ function mapTiles(){
 function draw() {
   background(220);
   showGrid();
+  assignPlayer();
+  if (partyIsHost()){
+    me.y = mouseY - 50;
+    me.x = mouseX- 50;
+  }
+
 }
 function showGrid() {
   for (let y = 0; y < SQUARE_DIMENSIONS; y++) {
