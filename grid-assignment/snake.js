@@ -90,61 +90,64 @@ class snake {
 }
 function assignPlayer(){
   if (!guests.find((p) => p.role === "player1")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player1";
+      console.log("Player1 found!");
     }
   }
   if (!guests.find((p) => p.role === "player2")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player2";
+      console.log("Player2 found!");
     }
   }
   if (!guests.find((p) => p.role === "player3")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player3";
     }
   }
   if (!guests.find((p) => p.role === "player4")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player4";
     }
   }
   if (!guests.find((p) => p.role === "player5")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player5";
     }
   }
   if (!guests.find((p) => p.role === "player6")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player6";
     }
   }
   if (!guests.find((p) => p.role === "player7")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player7";
     }
   }
   if (!guests.find((p) => p.role === "player8")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player8";
     }
   }
   if (!guests.find((p) => p.role === "player9")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player9";
     }
   }
   if (!guests.find((p) => p.role === "player10")){
-    const sp =guests.find((p) => p.role === "somePlayer");
+    const sp = guests.find((p) => p.role === "somePlayer");
     if (sp === me) {
       sp.role = "player10";
     }
@@ -165,11 +168,11 @@ function addPlayer(){
   const p10 = guests.find((p) => p.role === "player10");
   if (p1){
 
-    grid[p1.y][p1.x] = PLAYER1;
+    grid[firstPlayer.y][firstPlayer.x] = PLAYER1;
   }
 
   if (p2){
-    grid[p2.y][p2.x] = PLAYER2;
+    grid[secondPlayer.y][secondPlayer] = PLAYER2;
   }
 
   if (p3){

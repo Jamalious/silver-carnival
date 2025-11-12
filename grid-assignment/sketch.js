@@ -49,23 +49,28 @@ function preload(){
   partyConnect("wss://deepstream-server-1.herokuapp.com","grid.io");
   shared = partyLoadShared("shared");
   guests = partyLoadGuestShareds();
-  me = partyLoadMyShared({role: "somePlayer"});
+  me = partyLoadMyShared({
+    role: "somePlayer",
+    y: 45,
+    x: 0, 
+
+  });
 }
 
 function setup() {
-  createCanvas(6000, 6000);
+  createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
+  stroke(15);
   cols = Math.floor(width/CELL_SIZE);
   rows = Math.floor(height/CELL_SIZE);
   grid = createGrid(cols, rows); 
   
   //add players to grid
   addPlayer();
-
-  //instantiate the the new player
+  //resetting the game clock
   if (partyIsHost){
     partySetShared(shared, {
-      s1: [],
+      timer: 0,
     });
   }
 }
@@ -113,7 +118,7 @@ function movePlayer(x, y) {
     thePlayer.y = y;
   
     //put player on grid
-    grid[thePlayer.y][thePlayer.x] = PLAYER;
+    grid[thePlayer.y][thePlayer.x] = PLAYER1;
   
     //reset old spot to be open tile
     grid[oldY][oldX] = OPEN_TILE;
@@ -135,13 +140,13 @@ function createGrid(cols, rows){
 
 }
 function displayGrid(){
-  for (let x = 0; x < GRIDWIDTH; x++){
-    for(let y = 0; y < GRIDHEIGHT; y ++){
+  for (let y = 0; y < rows; y ++){
+    for(let x = 0; y < cols; x ++){
       if (grid[y][x] === OPEN_TILE){
         fill("white");
         square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
-      else if (grid[y][x] === PLAYER1) {
+      else if (grid[firstPlayer.y][firstPlayer.x] === PLAYER1) {
         fill(firstPlayer.color);
         square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
       }
