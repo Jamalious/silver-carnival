@@ -7,6 +7,10 @@
 const CELL_SIZE = 50;
 const IMPASSABLE = 1;
 const OPEN_TILE = 0;
+
+// increase/decreasing movement speed between tiles
+const FRAME_STEP =8;
+
 const PLAYER1 = 9;
 const PLAYER2 = 9;
 const PLAYER3 = 9;
@@ -23,9 +27,11 @@ let cellSize;
 let grid;
 let displayWorld;
 let TOP_RADIUS = 10;
-let players, guests, me;
+let shared, guests, me;
+let cols, rows;
 let BOTTOM_RIGHT_RADIUS = 10;
 let BOTTOM_LEFT_RADIUS = 10;
+let direction = 'left';
 
 
 
@@ -51,15 +57,21 @@ function preload(){
   guests = partyLoadGuestShareds();
   me = partyLoadMyShared({
     role: "somePlayer",
-    y: 45,
+    y: 0,
     x: 0, 
-
+    id: Math.floor(Math.random() * 1000000),
+    direction: "left",
+    isAlive: true,
+    playerTrail: [],
+    territory: [],
+    name: "player" + Math.floor(random(100)),
+    color: [random(50, 255), random(50, 255), random(50, 255)],
   });
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  angleMode(DEGREES);
+  createCanvas(3000, 3000);
+  frameRate(60);
   stroke(15);
   cols = Math.floor(width/CELL_SIZE);
   rows = Math.floor(height/CELL_SIZE);
@@ -81,29 +93,38 @@ function mapTiles(){
 }
 
 function draw() {
+  const grid = emptyGrid(cols, rows);
   background(255);
   displayGrid();
   assignPlayer();
-  if (partyIsHost()){
-    me.y = mouseY - 50;
-    me.x = mouseX- 50;
+  for (let g of guests) {
+    if (!g || !g.territory){
+      continue;
+    }
   }
-
+  drawGrid(grid);
+  updateMovement(grid);
+  drawPlayers();
 }
 
-
+//Storing direction for continous player movement
 function keyPressed(){
-  if (key === "w" ){
-    movePlayer(thePlayer.x, thePlayer.y - thePlayer.dy);
+  
+  //stopping the player from moving if they are dead
+  if (!me. alive){
+    return;
   }
-  else if(key ==="d") {
-    movePlayer(thePlayer.x + thePlayer.dx, thePlayer.y);
+  if (key === "w" && me. direction !== "down"){
+    me.direction = 'up';
   }
-  else if (key === "a") {
-    movePlayer(thePlayer.x - thePlayer.dx, thePlayer.y);
+  else if(key ==="d" && me.direction !== "left") {
+    me.direction = "right";
+  }
+  else if (key === "a" && me.direction !== "right") {
+    me.direction = "left";
   }
   else if (key === "s"){
-    movePlayer(thePlayer.x, thePlayer.y + thePlayer.dy );
+    me.direction = "right";
   }
 }
 
@@ -123,9 +144,17 @@ function movePlayer(x, y) {
     //reset old spot to be open tile
     grid[oldY][oldX] = OPEN_TILE;
   }
-
-
 }
+
+function continuous_movement(){
+  if(frameCount % 10 === 0){
+    let playerX = thePlayer.x;
+
+
+
+  }
+}
+
 function createGrid(cols, rows){
   let theGrid = [];
   for (let y = 0; y < rows; y++) {
@@ -141,7 +170,7 @@ function createGrid(cols, rows){
 }
 function displayGrid(){
   for (let y = 0; y < rows; y ++){
-    for(let x = 0; y < cols; x ++){
+    for(let x = 0; x < cols; x ++){
       if (grid[y][x] === OPEN_TILE){
         fill("white");
         square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
