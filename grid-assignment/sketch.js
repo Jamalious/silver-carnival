@@ -7,8 +7,18 @@
 const CELL_SIZE = 50;
 const IMPASSABLE = 1;
 const OPEN_TILE = 0;
-const SNAKE = 9;
-let GRIDWIDTH , GRIDHEIGHT = 10;
+const PLAYER1 = 9;
+const PLAYER2 = 9;
+const PLAYER3 = 9;
+const PLAYER4 = 9;
+const PLAYER5 = 9;
+const PLAYER6 = 9;
+const PLAYER7 = 9;
+const PLAYER8 = 9;
+const PLAYER9 = 9;
+const PLAYER10 = 9;
+
+let GRIDWIDTH,GRIDHEIGHT = 10;
 let cellSize;
 let grid;
 let displayWorld;
@@ -35,36 +45,24 @@ class bots {
     this.dy = dy;
   }
 };
-
-let gridShape =  {
-  x: GRIDWIDTH,
-  y: GRIDHEIGHT,
-  radius: cellSize,
-  angle: shapeType,
-};
-
 function preload(){
   partyConnect("wss://deepstream-server-1.herokuapp.com","grid.io");
   shared = partyLoadShared("shared");
-  players = partyLoadGuestShareds();
-  me = partyLoadmyShared({role: "somePlayer"});
+  guests = partyLoadGuestShareds();
+  me = partyLoadMyShared({role: "somePlayer"});
 }
 
 function setup() {
   createCanvas(6000, 6000);
   angleMode(DEGREES);
-  if (width < height) {
-    cellSize = width/SQUARE_DIMENSIONS;
-  }
-  else {
-    cellSize = height/SQUARE_DIMENSIONS;
-  }
-  grid = generateRandomGrid(GRIDWIDTH, GRIDHEIGHT);
-  //world map in bottom left corner
-  displayWorld = generateRandomGrid(width - 250, height - 250);
+  cols = Math.floor(width/CELL_SIZE);
+  rows = Math.floor(height/CELL_SIZE);
+  grid = createGrid(cols, rows); 
+  
+  //add players to grid
+  addPlayer();
 
   //instantiate the the new player
-  newPlayer = new snake (0, 0, 0, 0);
   if (partyIsHost){
     partySetShared(shared, {
       s1: [],
@@ -76,9 +74,10 @@ function mapTiles(){
   //const randomIndex = Math.floor(Math.random() * shapeAngles.length);
   //const shapeType = shapeAngles[randomIndex];
 }
+
 function draw() {
-  background(220);
-  showGrid();
+  background(255);
+  displayGrid();
   assignPlayer();
   if (partyIsHost()){
     me.y = mouseY - 50;
@@ -86,43 +85,104 @@ function draw() {
   }
 
 }
-function showGrid() {
-  for (let y = 0; y < SQUARE_DIMENSIONS; y++) {
-    for (let x = 0; x < SQUARE_DIMENSIONS; x++) {
-      if (theGrid[y][x] === 1) {
-        fill("black");
-      }
-      else if (theGrid[y][x] === 0) {
-        fill("white");
-      }
-      square(x * cellSize, y * cellSize, cellSize);
-      
-    }
+
+
+function keyPressed(){
+  if (key === "w" ){
+    movePlayer(thePlayer.x, thePlayer.y - thePlayer.dy);
   }
-}
-function generateRandomGrid(cols, rows) {
-  let newGrid = [];
-  for (let y = 0; y < rows; y++) {
-    newGrid.push([]);
-    for (let x = 0; x < cols; x++) {
-      if (random(100) < 50) {
-        newGrid[y].push(0);
-      }
-      else {
-        newGrid[y].push(1);
-      }
-    }
+  else if(key ==="d") {
+    movePlayer(thePlayer.x + thePlayer.dx, thePlayer.y);
   }
-  return newGrid;
+  else if (key === "a") {
+    movePlayer(thePlayer.x - thePlayer.dx, thePlayer.y);
+  }
+  else if (key === "s"){
+    movePlayer(thePlayer.x, thePlayer.y + thePlayer.dy );
+  }
 }
 
-function drawGrid(){
+function movePlayer(x, y) {
+  if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === OPEN_TILE) {
+    //previous position
+    let oldX = thePlayer.x;
+    let oldY = thePlayer.y;
+  
+    //moving the player location
+    thePlayer.x = x;
+    thePlayer.y = y;
+  
+    //put player on grid
+    grid[thePlayer.y][thePlayer.x] = PLAYER;
+  
+    //reset old spot to be open tile
+    grid[oldY][oldX] = OPEN_TILE;
+  }
+
+
+}
+function createGrid(cols, rows){
+  let theGrid = [];
+  for (let y = 0; y < rows; y++) {
+    theGrid.push([]);
+    for (let x = 0; x < cols; x++) {
+      theGrid[y].push(OPEN_TILE);
+    }
+  }
+  return theGrid;
+
+
+
+}
+function displayGrid(){
   for (let x = 0; x < GRIDWIDTH; x++){
     for(let y = 0; y < GRIDHEIGHT; y ++){
-      if (grid[y][x] === 0){
-        fill("black");
+      if (grid[y][x] === OPEN_TILE){
+        fill("white");
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
-      square(x* cellSize, y * cellSize, GRIDWIDTH, GRIDHEIGHT, 15, 10, 5);
+      else if (grid[y][x] === PLAYER1) {
+        fill(firstPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
+      else if (grid[y][x] === PLAYER2) {
+        fill(secondPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
+      else if (grid[y][x] === PLAYER3) {
+        fill(thirdPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
+      else if (grid[y][x] === PLAYER4) {
+        fill(fourthPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
+      else if (grid[y][x] === PLAYER5) {
+        fill(fifthPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
+      else if (grid[y][x] === PLAYER6) {
+        fill(sixthPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
+      else if (grid[y][x] === PLAYER7) {
+        fill(seventhPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
+      else if (grid[y][x] === PLAYER8) {
+        fill(eightPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
+      else if (grid[y][x] === PLAYER9) {
+        fill(ninthPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
+      else if (grid[y][x] === PLAYER10) {
+        fill(tenthPlayer.color);
+        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      }
     }
   }
 }
+
+

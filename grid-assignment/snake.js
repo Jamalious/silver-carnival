@@ -3,8 +3,81 @@ let cols;
 let rows;
 let SNAKE;
 let gameState = "home";
-let r, g, b = random(255);
+let r, g, b = 255;
+const PLAYER_SPAWN_X = 0;
+const PLAYER_SPAWN_Y = 0;
 
+let firstPlayer = {
+  x: PLAYER_SPAWN_X + 10,
+  y: PLAYER_SPAWN_Y + 10,
+  dx: 0,
+  dy: 3,
+  color: "Green"
+};
+let secondPlayer = {
+  x: PLAYER_SPAWN_X + 75,
+  y: PLAYER_SPAWN_Y + 75,
+  dx: 0,
+  dy: 3,
+  color: "Blue"
+};
+let thirdPlayer = {
+  x: PLAYER_SPAWN_X + 150,
+  y: PLAYER_SPAWN_Y + 150,
+  dx: 0,
+  dy: 3, 
+  color: "Orange",
+};
+let fourthPlayer = {
+  x: PLAYER_SPAWN_X + 225,
+  y: PLAYER_SPAWN_Y + 225,
+  dx: 0,
+  dy: 3,
+  color: "Black",
+};
+
+let fifthPlayer = {
+  x: PLAYER_SPAWN_X + 300,
+  y: PLAYER_SPAWN_Y + 300,
+  dx: 0,
+  dy: 3,
+  color: "Grey",
+};
+let sixthPlayer = {
+  x: PLAYER_SPAWN_X + 375,
+  y: PLAYER_SPAWN_Y + 375,
+  dx: 0,
+  dy: 3, 
+  color: "Yellow",
+};
+let seventhPlayer = {
+  x: PLAYER_SPAWN_X + 450,
+  y: PLAYER_SPAWN_Y + 450,
+  dx: 0,
+  dy: 3,
+  color: "Purple",
+};
+let eightPlayer = {
+  x: PLAYER_SPAWN_X + 525,
+  y: PLAYER_SPAWN_Y + 525,
+  dx: 0,
+  dy: 3,
+  color: "Red",
+};
+let ninthPlayer = {
+  x: PLAYER_SPAWN_X + 600,
+  y: PLAYER_SPAWN_Y + 600,
+  dx: 0,
+  dy: 3,
+  color: "Pink",
+};
+let tenthPlayer = {
+  x: PLAYER_SPAWN_X + 675,
+  y: PLAYER_SPAWN_Y + 675,
+  dx: 0,
+  dy: 3,
+  color: "Cyan"
+};
 class snake {
   constructor (x, y, dx, dy){
     this.x = x;
@@ -13,9 +86,8 @@ class snake {
     this.dy = dy;
     this.isAlive = false;
   }
-
+  
 }
-
 function assignPlayer(){
   if (!guests.find((p) => p.role === "player1")){
     const sp =guests.find((p) => p.role === "somePlayer");
@@ -80,57 +152,49 @@ function assignPlayer(){
   
 }
 
-function drawPlayer(){
-  const p1 = guests.find((p) => p.role === "snake1");
-  const p2 = guests.find((p) => p.role === "snake2");
-  const p3 = guests.find((p) => p.role === "snake3");
-  const p4 = guests.find((p) => p.role === "snake4");
-  const p5 = guests.find((p) => p.role === "snake5");
-  const p6 = guests.find((p) => p.role === "snake6");
-  const p7 = guests.find((p) => p.role === "snake7");
-  const p8 = guests.find((p) => p.role === "snake8");
-  const p9 = guests.find((p) => p.role === "snake9");
-  const p10 = guests.find((p) => p.role === "snake10");
+function addPlayer(){
+  const p1 = guests.find((p) => p.role === "player1");
+  const p2 = guests.find((p) => p.role === "player2");
+  const p3 = guests.find((p) => p.role === "player3");
+  const p4 = guests.find((p) => p.role === "player4");
+  const p5 = guests.find((p) => p.role === "player5");
+  const p6 = guests.find((p) => p.role === "player6");
+  const p7 = guests.find((p) => p.role === "player7");
+  const p8 = guests.find((p) => p.role === "player8");
+  const p9 = guests.find((p) => p.role === "player9");
+  const p10 = guests.find((p) => p.role === "player10");
   if (p1){
-    fill(r, g, b);
-    rect( x * cellSize, y * cellSize, cellSize);
+
+    grid[p1.y][p1.x] = PLAYER1;
   }
+
   if (p2){
-    fill(r, g, b);
-    
-    rect( x * cellSize, y * cellSize, cellSize);
+    grid[p2.y][p2.x] = PLAYER2;
   }
+
   if (p3){
-    fill(r, g, b);
-    rect( x * cellSize, y * cellSize, cellSize);
+    grid[thirdPlayer.y][thirdPlayer.x] = PLAYER3;
   }
   if (p4){
-    fill(r, g, b);
-    rect( x * cellSize, y * cellSize, cellSize);
+    grid[fourthPlayer.y][fourthPlayer.x] = PLAYER4;
   }
   if (p5){
-    fill(r, g, b);
-    rect( random(), y * cellSize, cellSize);
+    grid[fifthPlayer.y][fifthPlayer.x] = PLAYER5;
   }
   if (p6){
-    fill(r, g, b);
-    rect( x * cellSize, y * cellSize, cellSize);
+    grid[sixthPlayer.y][sixthPlayer.x] = PLAYER6;
   }
   if (p7){
-    fill(r, g, b);
-    rect( x * cellSize, y * cellSize, cellSize);
+    grid[seventhPlayer.y][seventhPlayer.x] = PLAYER7;
   }
   if (p8){
-    fill(r, g, b);
-    rect( x * cellSize, y * cellSize, cellSize);
+    grid[eightPlayer.y][eightPlayer.x] = PLAYER8;
   }
   if (p9){
-    fill(r, g, b);
-    rect( x * cellSize, y * cellSize, cellSize);
+    grid[ninthPlayer.y][ninthPlayer.x] = PLAYER9;
   }
   if (p10){
-    fill(r, g, b);
-    rect( x * cellSize, y * cellSize, cellSize);
+    grid[tenthPlayer.y][tenthPlayer.x] = PLAYER10;
   }
 }
 function movePlayer(x, y, dx, dy){
@@ -152,19 +216,11 @@ function movePlayer(x, y, dx, dy){
     }
   }
 }
-
-
-function keypressed(){
-  if (key === "w" ){
-    movePlayer(thePlayer.x, thePlayer.y - thePlayer.dy);
-  }
-  else if(key ==="d") {
-    movePlayer(thePlayer.x + thePlayer.dx, thePlayer.y);
-  }
-  else if (key === "a") {
-    movePlayer(thePlayer.x - thePlayer.dx, thePlayer.y);
-  }
-  else if (key === "s"){
-    movePlayer(thePlayer.x, thePlayer.y + thePlayer.dy );
+//eliminating a player if they run into the edge or touch a line
+function killPlayer (player) {
+  if (get(player.x + player.dx, player.y - player.dy).toString() !== PASSABLE.toString()){
+    
   }
 }
+
+

@@ -45,11 +45,12 @@ function displayGrid() {
   for (let y = 0; y < rows; y ++){
     for (let x = 0; x < cols; x++){
       if(grid[y][x] === OPEN_TILE){
-        image(grassImg, x * CELL_SIZE, y* CELL_SIZE, CELL_SIZE);
+        fill("black");
+        rect( x * CELL_SIZE, y* CELL_SIZE, CELL_SIZE);
       }
       else if (grid[y][x] === IMPASSABLE) {
-        
-        image(pathImg, x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+        fill("yellow");
+        rect( x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
       else if (grid[y][x] === PLAYER){
         fill("red");
