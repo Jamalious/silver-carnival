@@ -9,18 +9,18 @@ const IMPASSABLE = 1;
 const OPEN_TILE = 0;
 
 // increase/decreasing movement speed between tiles
-const FRAME_STEP =8;
+const FRAME_STEP = 8;
 
-const PLAYER1 = 9;
-const PLAYER2 = 9;
-const PLAYER3 = 9;
-const PLAYER4 = 9;
-const PLAYER5 = 9;
-const PLAYER6 = 9;
-const PLAYER7 = 9;
-const PLAYER8 = 9;
-const PLAYER9 = 9;
-const PLAYER10 = 9;
+//const PLAYER1 = 9;
+//const PLAYER2 = 9;
+//const PLAYER3 = 9;
+//const PLAYER4 = 9;
+//const PLAYER5 = 9;
+//const PLAYER6 = 9;
+//const PLAYER7 = 9;
+//const PLAYER8 = 9;
+//const PLAYER9 = 9;
+//const PLAYER10 = 9;
 
 let GRIDWIDTH,GRIDHEIGHT = 10;
 let cellSize;
@@ -28,29 +28,11 @@ let grid;
 let displayWorld;
 let TOP_RADIUS = 10;
 let shared, guests, me;
-let cols, rows;
 let BOTTOM_RIGHT_RADIUS = 10;
 let BOTTOM_LEFT_RADIUS = 10;
+let cols, rows;
 let direction = 'left';
 
-
-
-let thePlayer = {
-  x: 0,
-  y: 0,
-  dx: 5, 
-  dy: 5,
-  isAlive: false,
-};
-
-class bots {
-  constructor(x, y, dx, dy, ){
-    this.x = x;
-    this.y = y;
-    this.dx = dx;
-    this.dy = dy;
-  }
-};
 function preload(){
   partyConnect("wss://deepstream-server-1.herokuapp.com","grid.io");
   shared = partyLoadShared("shared");
@@ -73,12 +55,10 @@ function setup() {
   createCanvas(3000, 3000);
   frameRate(60);
   stroke(15);
-  cols = Math.floor(width/CELL_SIZE);
-  rows = Math.floor(height/CELL_SIZE);
   grid = createGrid(cols, rows); 
-  
-  //add players to grid
-  addPlayer();
+  cols = Math.floor(width/ CELL_SIZE);
+  rows = Math.floor(height / CELL_SIZE);
+
   //resetting the game clock
   if (partyIsHost){
     partySetShared(shared, {
@@ -93,18 +73,17 @@ function mapTiles(){
 }
 
 function draw() {
-  const grid = emptyGrid(cols, rows);
   background(255);
-  displayGrid();
-  assignPlayer();
+  const grid = createGrid(cols, rows);
+  playerData(grid, me, true);
+  displayGrid(grid);
   for (let g of guests) {
     if (!g || !g.territory){
       continue;
     }
   }
-  drawGrid(grid);
-  updateMovement(grid);
-  drawPlayers();
+  updatePlayerMovement(grid);
+  drawAllPlayers();
 }
 
 //Storing direction for continous player movement
@@ -123,8 +102,8 @@ function keyPressed(){
   else if (key === "a" && me.direction !== "right") {
     me.direction = "left";
   }
-  else if (key === "s"){
-    me.direction = "right";
+  else if (key === "s" && me.direction !== "up"){
+    me.direction = "down";
   }
 }
 
@@ -146,15 +125,9 @@ function movePlayer(x, y) {
   }
 }
 
-function continuous_movement(){
-  if(frameCount % 10 === 0){
-    let playerX = thePlayer.x;
-
-
-
-  }
+function playerData(){
+  
 }
-
 function createGrid(cols, rows){
   let theGrid = [];
   for (let y = 0; y < rows; y++) {
@@ -168,54 +141,45 @@ function createGrid(cols, rows){
 
 
 }
-function displayGrid(){
+function displayGrid(grid) {
   for (let y = 0; y < rows; y ++){
     for(let x = 0; x < cols; x ++){
-      if (grid[y][x] === OPEN_TILE){
+      const gridPoint = grid[y][x];
+
+      if (gridPoint === OPEN_TILE) {
         fill("white");
         square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
-      else if (grid[firstPlayer.y][firstPlayer.x] === PLAYER1) {
-        fill(firstPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      else if ( gridPoint < 0) {
+        const ownerId = -gridPoint;
+        const owner = assignPlayerId(ownerId);
+        if (owner) {
+          push();
+          noStroke();
+          fill(owner.color[0], owner.color[1], owner.color[2], 180);
+          square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+          pop();
+        }
+        else {
+          fill(120);
+          square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+        }
       }
-      else if (grid[y][x] === PLAYER2) {
-        fill(secondPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
+      else if (gridPoint > 0) {
+        const owner = assignPlayerId(gridPoint);
+        if (owner) {
+          push();
+          noStroke();
+          fill(owner.color[0], owner.color[1], owner.color[2], 90);
+          square(x* CELL_SIZE, y* CELL_SIZE, CELL_SIZE);
+          pop();
+        }
+        else {
+          fill(200);
+          square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+        }
       }
-      else if (grid[y][x] === PLAYER3) {
-        fill(thirdPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
-      }
-      else if (grid[y][x] === PLAYER4) {
-        fill(fourthPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
-      }
-      else if (grid[y][x] === PLAYER5) {
-        fill(fifthPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
-      }
-      else if (grid[y][x] === PLAYER6) {
-        fill(sixthPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
-      }
-      else if (grid[y][x] === PLAYER7) {
-        fill(seventhPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
-      }
-      else if (grid[y][x] === PLAYER8) {
-        fill(eightPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
-      }
-      else if (grid[y][x] === PLAYER9) {
-        fill(ninthPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
-      }
-      else if (grid[y][x] === PLAYER10) {
-        fill(tenthPlayer.color);
-        square(x* CELL_SIZE, y * CELL_SIZE, CELL_SIZE, 30);
-      }
-    }
+    }  
   }
 }
 
