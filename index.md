@@ -11,6 +11,7 @@
 - [Rectangle Neighbours 2d Array Demo](rect-neighbors-array)
 - [Game of Life](game-of-life)
 - [Basic OOP](basic-oop)
+- [Walker OOP](walker-woop)
 
 
 ## Assignments
