@@ -13,6 +13,7 @@
 - [Basic OOP](basic-oop)
 - [Walker OOP](walker-woop)
 - [Fireworks OOP](fireworks-oop)
+- [Nodes OOP](nodes)
 
 
 ## Assignments
